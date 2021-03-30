@@ -12,6 +12,8 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    const [selectedCard, setSelectedCard] = React.useState(false);
+    const [fullImg, setFullImg] = React.useState({});
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -30,6 +32,12 @@ function App() {
         setIsEditAvatarPopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
+        setSelectedCard(false);
+    }
+
+    function handleCardClick(card) {
+        setSelectedCard(true);
+        setFullImg(card);
     }
 
   return (
@@ -39,7 +47,8 @@ function App() {
         <Main
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick} 
+        onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
         />
         <Footer />
 
@@ -89,25 +98,16 @@ function App() {
                 <button className="popup__button popup__button_new-avatar" type='submit'>Сохранить</button>
             </PopupWithForm>
 
-            <ImagePopup />
+            <ImagePopup
+            onClose={closeAllPopups}
+            card={selectedCard}
+            cardInfo={fullImg}
+             />
             
         </section>
     </div>
 
-<template class='template__elements-list'>
-<li class='elements__item'>
-    <img class="elements__photo" src="#" alt='Фото места'/>
-    <button type="button" class='elements__delete-photo'></button>
-    <div class='elements__container'>
-        <h2 class='elements__text'>#</h2>
-        <div class="elements__like-container">
-            <button type="button" class='elements__heart-button'></button>
-            <p class="elements__like-counter">0</p>
-        </div>
-        
-    </div> 
-</li> 
-</template>
+
 </>
   );
 }
