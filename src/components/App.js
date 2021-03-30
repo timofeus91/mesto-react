@@ -1,5 +1,5 @@
 import React from 'react';
-import '../index.css';
+
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -60,9 +60,9 @@ function App() {
             onClose={closeAllPopups}
             >
             
-                <input type="text" className="popup__input popup__input_topform" name="popup-name" placeholder="Имя" required minlength='2' maxlength='40' id="name-user-input"/>
+                <input type="text" className="popup__input popup__input_topform" name="popup-name" placeholder="Имя" required minLength='2' maxLength='40' id="name-user-input"/>
                 <span className="popup__span" id="name-user-input-error"></span>
-                <input type="text" className="popup__input popup__input_bottomform" name="popup-about" placeholder="О себе" required minlength='2' maxlength='200' id="about-user-input"/>
+                <input type="text" className="popup__input popup__input_bottomform" name="popup-about" placeholder="О себе" required minLength='2' maxLength='200' id="about-user-input"/>
                 <span className="popup__span" id="about-user-input-error"></span>
                 <button className="popup__button" type='submit'>Сохранить</button>
             </PopupWithForm>
@@ -75,7 +75,7 @@ function App() {
             onClose={closeAllPopups}
             >
                 
-                <input type="text" className="popup__input popup__input_topform" name="popup-name-place" placeholder="Название" required minlength='2' maxlength='30' id="name-place-input"/>
+                <input type="text" className="popup__input popup__input_topform" name="popup-name-place" placeholder="Название" required minLength='2' maxLength='30' id="name-place-input"/>
                 <span className='popup__span' id="name-place-input-error"></span>
                 <input type="url" className="popup__input popup__input_bottomform" name="popup-link-photo" placeholder="Ссылка на картинку" required id="link-input"/>
                 <span className='popup__span' id="link-input-error"></span>

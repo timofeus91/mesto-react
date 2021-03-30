@@ -13,7 +13,7 @@
     cursor: pointer;
     padding: 0;
     margin: 0;
-    visibility: hidden;
+    visibility: visible;
 }
 
 .elements__delete-photo:hover {

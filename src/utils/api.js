@@ -11,7 +11,7 @@
 
     getInitialCards() {
        return fetch(`${this._url}cards`, {
-             method: 'GEt',
+             method: 'GET',
              headers: this._headers, 
         }).then((res) => {
             if (res.ok) {

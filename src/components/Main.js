@@ -5,9 +5,9 @@ import Card from './Card';
 
 
 function Main(props) {
-    const [userName, setUserName] = React.useState([]);
-    const [userDescription, setUserDescription] = React.useState([]);
-    const [userAvatar, setUserAvatar] = React.useState([]);
+    const [userName, setUserName] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
     const [cards, setCards] = React.useState([]);
 
 
@@ -23,15 +23,8 @@ function Main(props) {
             console.log(err);
         })
 
-
-        
-    }, []);
-
-    React.useEffect(() => {
-        
         api.getInitialCards()
             .then(cards => {
-                console.log(cards);
                 setCards(cards);
             })
 
@@ -39,12 +32,11 @@ function Main(props) {
                 console.log(err);
             })
 
+
         
     }, []);
 
-  
-    
-
+   
     return(
         <main className='content'>
             
@@ -69,7 +61,7 @@ function Main(props) {
             </section>
             <section className='elements page__elements'>
                 <ul className='elements__list'>
-                    { cards.map(item => 
+                    { cards.map(item => (
                             <Card
                             key={item._id}
                             link={item.link}
@@ -78,6 +70,7 @@ function Main(props) {
                             onCardClick={props.onCardClick}
                             
                             />
+                    )
                         )}
                 </ul>
             </section>
