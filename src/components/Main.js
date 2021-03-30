@@ -1,8 +1,18 @@
+import React from 'react';
 import avatar from '../images/megacat.jpg';
+import api from '../utils/api';
 
 
 
 function Main(props) {
+    const [userName, setUserName] = React.useState([]);
+    const [userDescription, setUserDescription] = React.useState([]);
+    const [userAvatar, setUserAvatar] = React.useState([]);
+
+    api.getUserInfo()
+        .then(userInfo => {
+            
+        })
 
     return(
         <main className='content'>

@@ -1,6 +1,6 @@
 //класс для подключения api
 
-export class Api {
+ class Api {
     //конструктор принимает адрес куда обращаться за данными (или куда их отправлять) и настройки.
     constructor(config) {
         this._url = config.url;
@@ -140,8 +140,15 @@ export class Api {
     }
 
 
-
-
-
 }
 
+
+const api = new Api({
+    url: "https://mesto.nomoreparties.co/v1/cohort-20/", 
+    headers: {
+        "content-type": "application/json",
+        "Authorization": "43c52a6d-19a6-461e-b067-2db5e03ba70b",
+    }
+});
+
+export default api;
