@@ -21,7 +21,7 @@ function Main(props) {
         })
 
         .catch((err) => {
-            console.log(err);
+            console.log(`Произошла ошибка - ${err}`);
         })
 
         api.getInitialCards()
@@ -30,7 +30,7 @@ function Main(props) {
             })
 
             .catch((err) => {
-                console.log(err);
+                console.log(`Произошла ошибка - ${err}`);
             })
 
 
