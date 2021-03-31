@@ -3,11 +3,11 @@ import React from 'react';
 function Card(props) {
 
     function handleClick() {
-        props.onCardClick(props);
+        props.onCardClick({name: props.name, link: props.link, card: true});
       }  
 
     return(
-    
+    (
         <li className='elements__item'>
             <img className="elements__photo" src={props.link} alt={props.name} onClick={handleClick}/>
             <button type="button" className='elements__delete-photo '></button>
@@ -19,6 +19,7 @@ function Card(props) {
                 </div>
             </div> 
         </li> 
+    )
 
 
     );

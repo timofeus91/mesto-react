@@ -12,8 +12,8 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const [selectedCard, setSelectedCard] = React.useState(false);
-    const [fullImg, setFullImg] = React.useState({});
+    const [selectedCard, setSelectedCard] = React.useState({name: '', link: '', card: false});
+    
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -36,8 +36,8 @@ function App() {
     }
 
     function handleCardClick(card) {
-        setSelectedCard(true);
-        setFullImg(card);
+        setSelectedCard(card);
+        
     }
 
   return (
@@ -65,6 +65,7 @@ function App() {
                 <input type="text" className="popup__input popup__input_bottomform" name="popup-about" placeholder="О себе" required minLength='2' maxLength='200' id="about-user-input"/>
                 <span className="popup__span" id="about-user-input-error"></span>
                 <button className="popup__button" type='submit'>Сохранить</button>
+            
             </PopupWithForm>
 
 
@@ -80,11 +81,14 @@ function App() {
                 <input type="url" className="popup__input popup__input_bottomform" name="popup-link-photo" placeholder="Ссылка на картинку" required id="link-input"/>
                 <span className='popup__span' id="link-input-error"></span>
                 <button className="popup__button" type='submit'>Сохранить</button>
+                
             </PopupWithForm>
 
 
             <PopupWithForm name='areyousure' title='Вы уверены?'>
+                
                 <button className="popup__button popup__button_areyousure" type='submit'>Да</button>
+                
             </PopupWithForm>
 
             <PopupWithForm
@@ -93,15 +97,17 @@ function App() {
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             >
+                
                 <input type="url" className="popup__input popup__input_topform popup__input_new-avatar" name="new-avatar-photo" placeholder="Ссылка на картинку" required id="new-avatar"/>
                 <span className='popup__span' id="new-avatar-error"></span>
                 <button className="popup__button popup__button_new-avatar" type='submit'>Сохранить</button>
+                
             </PopupWithForm>
 
             <ImagePopup
             onClose={closeAllPopups}
             card={selectedCard}
-            cardInfo={fullImg}
+            
              />
             
         </section>

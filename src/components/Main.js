@@ -5,6 +5,7 @@ import Card from './Card';
 
 
 function Main(props) {
+    //При попытке деструктуризации , как вы написали в ревью в комментарии "можно лучше", у меня пошли ошибки и код не работал. Видимо я не до конца понял как это правильно сделать в этом месте. Спасибо за замечание, обязательно изучу этот вопрос. 
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
@@ -38,6 +39,7 @@ function Main(props) {
 
    
     return(
+        (
         <main className='content'>
             
             <section className='profile page__profile'>
@@ -69,12 +71,14 @@ function Main(props) {
                             likes={item.likes}
                             onCardClick={props.onCardClick}
                             
+                            
                             />
                     )
                         )}
                 </ul>
             </section>
         </main>
+        )
     );
 }
 

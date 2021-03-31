@@ -7,19 +7,23 @@
         this._headers = config.headers;
     }
 
+
+    //приватный метод с повтряющимся кодом у всех запросов (то что идет после 1 return)
+
+    _checkResponse(res) {
+        if (res.ok) {
+            return res.json()
+        }
+
+        return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
+    }
+
     // метод по инициализации карточек с сервера
 
     getInitialCards() {
        return fetch(`${this._url}cards`, {
-             method: 'GET',
              headers: this._headers, 
-        }).then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-
-            return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-        });
+        }).then(this._checkResponse);
     }
 
     //метод по добавлению новой карточки
@@ -32,28 +36,15 @@
                   name: data.name,
                   link: data.link,
               })
-        }).then((res) => {
-             if (res.ok) {
-                 return res.json()
-             }
-
-             return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-         });
+        }).then(this._checkResponse);
     }
 
     //метод по получению информации о пользователе
 
     getUserInfo() {
         return fetch(`${this._url}users/me`, {
-              method: 'GET',
               headers: this._headers,
-        }).then((res) => {
-             if (res.ok) {
-                 return res.json()
-             }
-
-             return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-         });
+        }).then(this._checkResponse);
     }
 
     //метод по изменению информации о пользователе
@@ -66,13 +57,7 @@
                 name: data.name,
                 about: data.about,
               })
-        }).then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-
-            return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-        });
+        }).then(this._checkResponse);
     }
 
     //метод по смене аватарки
@@ -84,13 +69,7 @@
             body: JSON.stringify({
                 avatar: data.link
               })
-        }).then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-
-            return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-        });
+        }).then(this._checkResponse);
     }
 
 
@@ -100,13 +79,7 @@
         return fetch(`${this._url}cards/likes/${cardId}/`, {
             method: 'PUT',
             headers: this._headers,
-      }).then((res) => {
-           if (res.ok) {
-               return res.json()
-           }
-
-           return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-       });
+      }).then(this._checkResponse);
     }
 
     //метод по снятию лайка
@@ -115,13 +88,7 @@
         return fetch(`${this._url}cards/likes/${cardId}/`, {
             method: 'DELETE',
             headers: this._headers,
-      }).then((res) => {
-           if (res.ok) {
-               return res.json()
-           }
-
-           return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-       });
+      }).then(this._checkResponse);
     }
 
     //метод по удалению карточки
@@ -130,13 +97,7 @@
         return fetch(`${this._url}cards/${cardId}/`, {
             method: 'DELETE',
             headers: this._headers,
-      }).then((res) => {
-           if (res.ok) {
-               return res.json()
-           }
-
-           return Promise.reject(`Сервер недоступен. Ошибка: ${res.status}.`);
-       });
+      }).then(this._checkResponse);
     }
 
 
