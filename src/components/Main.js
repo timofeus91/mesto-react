@@ -56,7 +56,6 @@ function Main(props) {
                     { cards.map(item => (
                             <Card
                             key={item._id}
-                            id ={item._id}
                             link={item.link}
                             name={item.name}
                             likes={item.likes}
