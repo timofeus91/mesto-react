@@ -77,12 +77,10 @@ function App() {
     }
 
     //обработчик для отправки через api данных о новом аватаре и обновлении страницы
-    function handleUpdateAvatar(data) {
-        console.log(data);
-        api.editUserAvatar(data)
-            .then(data => {
-                
-                setCurrentUser(data)
+    function handleUpdateAvatar(avatar) {
+        api.editUserAvatar(avatar)
+            .then(avatar => {
+                setCurrentUser(avatar)
                 closeAllPopups()
             })
             .catch((err) => {
