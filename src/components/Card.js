@@ -3,7 +3,9 @@ import {CurrentUserContext} from '../components/CurrentUserContext';
 
 function Card(props) {
 
+    //Подписываемся на контекст
     const currentUser = React.useContext(CurrentUserContext);
+
     // Определяем, являемся ли мы владельцем текущей карточки
     const isOwn = props.owner._id === currentUser._id;
 
@@ -12,6 +14,11 @@ function Card(props) {
     
     // Создаём переменную, которую после зададим в `className` для кнопки лайка
     const cardLikeButtonClassName = isLiked ? 'elements__heart-button elements__heart-button_like' : 'elements__heart-button' ;
+
+    // обработчик клика
+    function handleLikeClick() {
+        props.onCardLike(props);
+    };
 
     function handleClick() {
         props.onCardClick({name: props.name, link: props.link, imgOpen: true});
@@ -25,7 +32,7 @@ function Card(props) {
             <div className='elements__container'>
                 <h2 className='elements__text'>{props.name}</h2>
                 <div className="elements__like-container">
-                    <button type="button" className={cardLikeButtonClassName}></button>
+                    <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}></button>
                     <p className="elements__like-counter">{props.likes.length}</p>
                 </div>
             </div> 

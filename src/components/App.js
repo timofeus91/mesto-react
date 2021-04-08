@@ -15,7 +15,11 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({name: '', link: '', imgOpen: false});
-    const [currentUser, setCurrentUser] = React.useState(false);
+    const [currentUser, setCurrentUser] = React.useState({
+        name: 'Ждёмс',
+        about: 'Ждёмс',
+        avatar: 'https://i007.fotocdn.net/s124/4a5340ffd4d2b33c/public_pin_l/2826322361.jpg'
+    });
 
     React.useEffect(() => {
         api.getUserInfo()

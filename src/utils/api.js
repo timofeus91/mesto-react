@@ -91,6 +91,18 @@
       }).then(this._checkResponse);
     }
 
+
+    //Единый метод по установке и снятию лайка
+
+    changeLikeCardStatus(cardId, isLiked) {
+        if (isLiked) {
+           return this.putLike(cardId);
+        }
+        else {
+            return this.removeLike(cardId);
+        }
+    }
+
     //метод по удалению карточки
 
     deleteCard(cardId) {

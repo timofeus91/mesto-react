@@ -7,11 +7,12 @@ import {CurrentUserContext} from '../components/CurrentUserContext';
 
 function Main(props) {
     const [cards, setCards] = React.useState([]);
-
+    
+    //подписываемся на контекст
     const currentUser = React.useContext(CurrentUserContext);
 
 
-
+    //Загружаем карточки с сервера. Проставлена зависимость при которой делается повторный запрос 
     React.useEffect(() => {
         
         api.getInitialCards()
@@ -25,7 +26,24 @@ function Main(props) {
 
 
         
-    }, []);
+    }, [currentUser]);
+
+    //функция по снятию-постановке лайка на карточку с использованием api
+    function handleCardLike(card) {
+        console.log('Нажали кнопку!');
+        console.log(card);
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api.changeLikeCardStatus(card.id, !isLiked)
+        .then((newCard) => {
+            setCards(state => state.map((c) => c.id === card.id ? newCard : c)); 
+        })
+        .catch((err) => {
+            console.log(`Произошла ошибка - ${err}`);
+        })
+    } 
 
    
     return(
@@ -61,6 +79,8 @@ function Main(props) {
                             likes={item.likes}
                             onCardClick={props.onCardClick}
                             owner = {item.owner}
+                            onCardLike = {handleCardLike}
+                            id = {item._id}
                             
                             
                             />
