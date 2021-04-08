@@ -7,6 +7,8 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import {CurrentUserContext, currentUser} from './CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
 
 
@@ -16,11 +18,14 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({name: '', link: '', imgOpen: false});
     const [currentUser, setCurrentUser] = React.useState({
+        //пока идет загрузка с сервера чтобы позиции не были пустыми и говорили о выполнении загрузки
         name: 'Ждёмс',
         about: 'Ждёмс',
         avatar: 'https://i007.fotocdn.net/s124/4a5340ffd4d2b33c/public_pin_l/2826322361.jpg'
     });
 
+
+    //эффект для получения информации о пользователе
     React.useEffect(() => {
         api.getUserInfo()
         .then(userInfo => {
@@ -29,8 +34,9 @@ function App() {
         .catch((err) => {
             console.log(`Произошла ошибка - ${err}`);
         })
-    });
+    }, []);
 
+    //обработчки для открытия попапов
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
     }
@@ -44,6 +50,8 @@ function App() {
         setIsAddPlacePopupOpen(true);
     }
 
+
+    //обработчик по закрытию попапов
     function closeAllPopups() {
         setIsEditAvatarPopupOpen(false);
         setIsEditProfilePopupOpen(false);
@@ -51,9 +59,35 @@ function App() {
         setSelectedCard({name: '', link: '', imgOpen: false});
     }
 
+    //обработчик для открытия большого варианта фото
     function handleCardClick(card) {
         setSelectedCard(card);
-        
+    }
+
+    //обработчки для отправки через api новых данных о пользователе и обновлении страницы
+    function handleUpdateUser(data) {
+        api.editUserInfo(data)
+            .then(data => {
+                setCurrentUser(data)
+                closeAllPopups()
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+    }
+
+    //обработчик для отправки через api данных о новом аватаре и обновлении страницы
+    function handleUpdateAvatar(data) {
+        console.log(data);
+        api.editUserAvatar(data)
+            .then(data => {
+                
+                setCurrentUser(data)
+                closeAllPopups()
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
     }
 
   return (
@@ -69,20 +103,11 @@ function App() {
         <Footer />
 
         <section className='popups'>
-            <PopupWithForm 
-            name='user'
-            title='Редактировать профиль' 
-            isOpen={isEditProfilePopupOpen}
+
+            <EditProfilePopup 
+            isOpen={isEditProfilePopupOpen} 
             onClose={closeAllPopups}
-            >
-            
-                <input type="text" className="popup__input popup__input_topform" name="popup-name" placeholder="Имя" required minLength='2' maxLength='40' id="name-user-input"/>
-                <span className="popup__span" id="name-user-input-error"></span>
-                <input type="text" className="popup__input popup__input_bottomform" name="popup-about" placeholder="О себе" required minLength='2' maxLength='200' id="about-user-input"/>
-                <span className="popup__span" id="about-user-input-error"></span>
-                <button className="popup__button" type='submit'>Сохранить</button>
-            
-            </PopupWithForm>
+            onUpdateUser={handleUpdateUser} /> 
 
 
             <PopupWithForm
@@ -107,18 +132,11 @@ function App() {
                 
             </PopupWithForm>
 
-            <PopupWithForm
-            name='new-avatar'
-            title='Обновить аватар'
-            isOpen={isEditAvatarPopupOpen}
+            <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen} 
             onClose={closeAllPopups}
-            >
-                
-                <input type="url" className="popup__input popup__input_topform popup__input_new-avatar" name="new-avatar-photo" placeholder="Ссылка на картинку" required id="new-avatar"/>
-                <span className='popup__span' id="new-avatar-error"></span>
-                <button className="popup__button popup__button_new-avatar" type='submit'>Сохранить</button>
-                
-            </PopupWithForm>
+            onUpdateAvatar={handleUpdateAvatar}
+            />
 
             <ImagePopup
             onClose={closeAllPopups}

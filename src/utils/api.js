@@ -73,18 +73,18 @@
     }
 
 
-    //метод по установке лайка
+    //приватный метод по установке лайка
 
-    putLike(cardId) {
+    _putLike(cardId) {
         return fetch(`${this._url}cards/likes/${cardId}/`, {
             method: 'PUT',
             headers: this._headers,
       }).then(this._checkResponse);
     }
 
-    //метод по снятию лайка
+    //приватный метод по снятию лайка
 
-    removeLike(cardId) {
+    _removeLike(cardId) {
         return fetch(`${this._url}cards/likes/${cardId}/`, {
             method: 'DELETE',
             headers: this._headers,
@@ -96,10 +96,10 @@
 
     changeLikeCardStatus(cardId, isLiked) {
         if (isLiked) {
-           return this.putLike(cardId);
+           return this._putLike(cardId);
         }
         else {
-            return this.removeLike(cardId);
+            return this._removeLike(cardId);
         }
     }
 

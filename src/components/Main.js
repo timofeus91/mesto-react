@@ -1,7 +1,7 @@
 import React from 'react';
 import api from '../utils/api';
 import Card from './Card';
-import {CurrentUserContext} from '../components/CurrentUserContext';
+import {CurrentUserContext} from './CurrentUserContext';
 
 
 
@@ -23,27 +23,37 @@ function Main(props) {
             .catch((err) => {
                 console.log(`Произошла ошибка - ${err}`);
             })
-
-
-        
+        //ниже проставлена зависимость на изменения в currentUser чтобы лайки изменялись без обновления страницы
     }, [currentUser]);
 
     //функция по снятию-постановке лайка на карточку с использованием api
     function handleCardLike(card) {
-        console.log('Нажали кнопку!');
-        console.log(card);
+
         // Снова проверяем, есть ли уже лайк на этой карточке
         const isLiked = card.likes.some(i => i._id === currentUser._id);
         
         // Отправляем запрос в API и получаем обновлённые данные карточки
         api.changeLikeCardStatus(card.id, !isLiked)
-        .then((newCard) => {
-            setCards(state => state.map((c) => c.id === card.id ? newCard : c)); 
-        })
-        .catch((err) => {
-            console.log(`Произошла ошибка - ${err}`);
-        })
+            .then((newCard) => {
+                setCards(state => state.map((c) => c.id === card.id ? newCard : c)); 
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
     } 
+
+    //функция по удалению карточки с использованием api
+    function handleCardDelete(card) {
+        api.deleteCard(card.id)
+            .then((deleteCard) => {
+                console.log(deleteCard);
+                setCards(state => state.filter((c) => c.id === card.id ? null : c));
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+
+    }
 
    
     return(
@@ -81,6 +91,7 @@ function Main(props) {
                             owner = {item.owner}
                             onCardLike = {handleCardLike}
                             id = {item._id}
+                            onCardDelete = {handleCardDelete}
                             
                             
                             />
