@@ -1,59 +1,14 @@
 import React from 'react';
-import api from '../utils/api';
 import Card from './Card';
 import {CurrentUserContext} from './CurrentUserContext';
 
 
 
 function Main(props) {
-    const [cards, setCards] = React.useState([]);
+    
     
     //подписываемся на контекст
     const currentUser = React.useContext(CurrentUserContext);
-
-
-    //Загружаем карточки с сервера. Проставлена зависимость при которой делается повторный запрос 
-    React.useEffect(() => {
-        
-        api.getInitialCards()
-            .then(cards => {
-                setCards(cards);
-            })
-
-            .catch((err) => {
-                console.log(`Произошла ошибка - ${err}`);
-            })
-        //ниже проставлена зависимость на изменения в currentUser чтобы лайки изменялись без обновления страницы
-    }, [currentUser]);
-
-    //функция по снятию-постановке лайка на карточку с использованием api
-    function handleCardLike(card) {
-
-        // Снова проверяем, есть ли уже лайк на этой карточке
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
-        
-        // Отправляем запрос в API и получаем обновлённые данные карточки
-        api.changeLikeCardStatus(card.id, !isLiked)
-            .then((newCard) => {
-                setCards(state => state.map((c) => c.id === card.id ? newCard : c)); 
-            })
-            .catch((err) => {
-                console.log(`Произошла ошибка - ${err}`);
-            })
-    } 
-
-    //функция по удалению карточки с использованием api
-    function handleCardDelete(card) {
-        api.deleteCard(card.id)
-            .then((deleteCard) => {
-                console.log(deleteCard);
-                setCards(state => state.filter((c) => c.id === card.id ? null : c));
-            })
-            .catch((err) => {
-                console.log(`Произошла ошибка - ${err}`);
-            })
-
-    }
 
    
     return(
@@ -81,7 +36,7 @@ function Main(props) {
             </section>
             <section className='elements page__elements'>
                 <ul className='elements__list'>
-                    { cards.map(item => (
+                    { props.cards.map(item => (
                             <Card
                             key={item._id}
                             link={item.link}
@@ -89,9 +44,9 @@ function Main(props) {
                             likes={item.likes}
                             onCardClick={props.onCardClick}
                             owner = {item.owner}
-                            onCardLike = {handleCardLike}
+                            onCardLike = {props.onCardLike}
                             id = {item._id}
-                            onCardDelete = {handleCardDelete}
+                            onCardDelete = {props.onCardDelete}
                             
                             
                             />

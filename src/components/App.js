@@ -6,9 +6,10 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
-import {CurrentUserContext, currentUser} from './CurrentUserContext';
+import {CurrentUserContext} from './CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 
 
@@ -23,6 +24,22 @@ function App() {
         about: 'Ждёмс',
         avatar: 'https://i007.fotocdn.net/s124/4a5340ffd4d2b33c/public_pin_l/2826322361.jpg'
     });
+    const [cards, setCards] = React.useState([]);
+
+
+    //Загружаем карточки с сервера. Проставлена зависимость. 
+    React.useEffect(() => {
+        
+        api.getInitialCards()
+            .then(cards => {
+                setCards(cards);
+            })
+
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+        
+    }, []);
 
 
     //эффект для получения информации о пользователе
@@ -64,6 +81,35 @@ function App() {
         setSelectedCard(card);
     }
 
+    //функция по снятию-постановке лайка на карточку с использованием api
+    function handleCardLike(card) {
+
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api.changeLikeCardStatus(card.id, !isLiked)
+            .then((newCard) => {
+                setCards(state => state.map((c) => c._id === card.id ? newCard : c)); 
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+    }
+
+    //функция по удалению карточки с использованием api
+    function handleCardDelete(card) {
+        api.deleteCard(card.id)
+            .then((deleteCard) => {
+                //console.log(deleteCard);
+                setCards(state => state.filter((c) => c._id === card.id ? null : c));
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+
+    }
+
     //обработчки для отправки через api новых данных о пользователе и обновлении страницы
     function handleUpdateUser(data) {
         api.editUserInfo(data)
@@ -78,6 +124,7 @@ function App() {
 
     //обработчик для отправки через api данных о новом аватаре и обновлении страницы
     function handleUpdateAvatar(avatar) {
+        console.log(avatar);
         api.editUserAvatar(avatar)
             .then(avatar => {
                 setCurrentUser(avatar)
@@ -86,6 +133,20 @@ function App() {
             .catch((err) => {
                 console.log(`Произошла ошибка - ${err}`);
             })
+    }
+
+    //обработчик для добавления новой карточки через api и обновлении страницы
+    function handleAddPlace(data) {
+        //console.log(data);
+        api.addNewCard(data)
+            .then(newCard => {
+                setCards([newCard, ...cards]);
+                closeAllPopups() 
+            })
+            .catch((err) => {
+                console.log(`Произошла ошибка - ${err}`);
+            })
+
     }
 
   return (
@@ -97,6 +158,9 @@ function App() {
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
         onCardClick={handleCardClick}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
         />
         <Footer />
 
@@ -108,20 +172,10 @@ function App() {
             onUpdateUser={handleUpdateUser} /> 
 
 
-            <PopupWithForm
-            name='place'
-            title='Новое место'
+            <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
-            >
-                
-                <input type="text" className="popup__input popup__input_topform" name="popup-name-place" placeholder="Название" required minLength='2' maxLength='30' id="name-place-input"/>
-                <span className='popup__span' id="name-place-input-error"></span>
-                <input type="url" className="popup__input popup__input_bottomform" name="popup-link-photo" placeholder="Ссылка на картинку" required id="link-input"/>
-                <span className='popup__span' id="link-input-error"></span>
-                <button className="popup__button" type='submit'>Сохранить</button>
-                
-            </PopupWithForm>
+            onAddPlace={handleAddPlace} />
 
 
             <PopupWithForm name='areyousure' title='Вы уверены?'>
