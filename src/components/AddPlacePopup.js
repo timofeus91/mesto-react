@@ -18,16 +18,18 @@ function AddPlacePopup(props) {
         } 
 
            //функция по сбрасыванию действия по умолчанию и для передачи значений инпутов в следующий компонент
-    function handleSubmit(e) {
-        // Запрещаем браузеру переходить по адресу формы
-        e.preventDefault();
+        function handleSubmit(e) {
+          // Запрещаем браузеру переходить по адресу формы
+          e.preventDefault();
       
-        // Передаём значения управляемых компонентов во внешний обработчик
-        props.onAddPlace({
+          // Передаём значения управляемых компонентов во внешний обработчик
+          props.onAddPlace({
           name: name,
           link: link,
-        });
-      }
+          });
+          setName('');
+          setLink('');
+        }
       
       
       return (
